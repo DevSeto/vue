@@ -11,6 +11,18 @@ export default {
         setAuthToken(token);
         SET_PROFILE_USER(state, user);
     },
+    SET_PROFILE_LISTS: (state, form_data) => {
+        var profile_list =   (localStorage.getItem('profile_list'))?JSON.parse(localStorage.getItem('profile_list')):[];
+        console.log(profile_list)
+        profile_list = [...profile_list ,...form_data];
+        if(profile_list.length){
+            profile_list.reduce((unique, item)=>{
+                console.log(unique, item)
+            })
+        }
+        state.profile_list = profile_list;
+        localStorage.setItem('profile_list', JSON.stringify(profile_list));
+    },
     SET_AUTH_ADVANCED: (state, address) => {
         LOGOUT(state);
         state.auth.advanced = address;

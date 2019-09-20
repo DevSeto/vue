@@ -15,6 +15,7 @@ export default function() {
         userTimeStamp: 0,
         /** @type Array<CoinItem> */
         balance: [],
+        profile_list: [],
         /** @type Array<StakeItem> */
         stakeList: [],
         /** @type Array<Validator> */

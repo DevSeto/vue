@@ -4,22 +4,29 @@
     import Snackbar from '~/components/common/Snackbar';
     import Language from '~/layouts/_language';
     import Footer from '~/layouts/_footer';
+    import AuthSignInForm from "../components/AuthSignInForm";
 
     export default {
         components: {
             Snackbar,
             Language,
+            AuthSignInForm,
             Footer,
         },
         data() {
             return {
                 isMenuActive: false,
+                istoggleLoginForm: false,
                 isDesktop: isDesktop(),
             };
         },
         computed: {
             username() {
                 const username = this.$store.getters.username;
+                if(!this.$store.state.profile_list.length){
+                    this.$store.commit('SET_PROFILE_LISTS', this.$store.getters.getProfileLists);
+
+                }
                 return username.substr(0, 2) === 'Mx' ? shortHashFilter(username, 4) : username;
             },
             isTestnet() {
@@ -44,6 +51,9 @@
             },
             toggleMenu() {
                 this.isMenuActive = !this.isMenuActive;
+            },
+            toggleLoginForm() {
+                this.istoggleLoginForm = !this.istoggleLoginForm;
             },
             linkClick($event) {
                 if (this.$route.path === $event.target.getAttribute('href')) {
@@ -79,7 +89,23 @@
                         <!--
                         <nuxt-link class="button button&#45;&#45;ghost-white" :to="preferredPath('account')" v-if="username">{{ username }}</nuxt-link>
                         -->
+                        <span class="header__user-name" style="border: 1px solid red"
+                              v-if=" '@'+profile_list.username  !== username " v-for="profile_list in $store.state.profile_list">
+                            {{ profile_list.username }}
+                        </span>
                         <span class="header__user-name">{{ username }}</span>
+                        <span class="header__user-name" style="color: red" @click="toggleLoginForm()">+</span>
+                        <div class="auth-content-header"style="position: relative" v-if="istoggleLoginForm">
+                            <div class="auth-body-header" style="position: absolute;
+    width: 200px;
+    right: 0px;
+    background-color: #b3b3b3;"
+                            >
+                                <AuthSignInForm />
+
+                            </div>
+                        </div>
+
                         <button class="header__user-logout u-semantic-button" data-test-id="headerLogoutButton" @click="logout">
                             <img class="" src="/img/icon-auth-logout.svg" width="40" height="40" alt="Logout">
                         </button>

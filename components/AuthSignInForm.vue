@@ -55,6 +55,9 @@
         methods: {
             onAcceptUsername: makeAccepter('username', true),
             submit() {
+                if (this.$store.getters.username && '@'+this.form.username == this.$store.getters.username) {
+                    return;
+                }
                 if (this.isFormSending) {
                     return;
                 }
@@ -67,7 +70,11 @@
                 login(this.form)
                     .then((authData) => {
                         this.$store.commit('SET_AUTH_PROFILE', authData);
-                        this.$router.push(this.preferredPath('index'));
+
+                        this.$store.commit('SET_PROFILE_LISTS', [this.form]);
+                        console.log(this.form)
+
+                        // this.$router.push(this.preferredPath('index'));
                         // don't remove loader during redirect
                         // this.isFormSending = false;
                     })

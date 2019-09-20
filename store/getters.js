@@ -20,6 +20,11 @@ export default {
     isUserAdvanced(state) {
         return !!(state.auth.advanced && isValidMnemonic(state.auth.advanced));
     },
+
+    getProfileLists(state) {
+        return JSON.parse(localStorage.getItem('profile_list'));
+        // return state.profile_list;
+    },
     /**
      * Checks if user is authorized by server
      * @return {boolean}
